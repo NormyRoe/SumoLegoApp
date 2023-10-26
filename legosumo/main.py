@@ -10,7 +10,7 @@ connection = pymysql.connect(
   password="Password",
   read_timeout=timeout,
   port=10694,
-  user="username",
+  user="Username",
   write_timeout=timeout,
 )
   
