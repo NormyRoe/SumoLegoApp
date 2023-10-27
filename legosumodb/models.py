@@ -34,7 +34,7 @@ class Competition(models.Model):
 class Division(models.Model):
     division_id = models.AutoField(db_column='Division_id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(max_length=45, blank=True, null=True)
-    nbr_of_fields = models.IntegerField(blank=True, null=True)
+    
 
     class Meta:
         managed = False
@@ -44,7 +44,8 @@ class Division(models.Model):
 class DivisionHasCompetition(models.Model):
     Division_id = models.OneToOneField(Division, models.DO_NOTHING, db_column='Division_id', primary_key=True)  # Field name made lowercase. The composite primary key (Division_id, Competition_id) found, that is not supported. The first column is selected.
     Competition_id = models.ForeignKey(Competition, models.DO_NOTHING, db_column='Competition_id')  # Field name made lowercase.
-
+    nbr_of_fields = models.IntegerField(blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'Division_has_Competition'
