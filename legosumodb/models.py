@@ -131,8 +131,8 @@ class CheckedIn(models.Model):
 
 class GameResult(models.Model):
     game_id = models.AutoField(db_column='Game_id', primary_key=True)  # Field name made lowercase.
-    competition_id = models.ForeignKey(Competition, models.DO_NOTHING, db_column='Competition_id')  # Field name made lowercase.
-    division_id = models.ForeignKey(Division, models.DO_NOTHING, db_column='Division_id')  # Field name made lowercase.
+    competition = models.ForeignKey(Competition, models.DO_NOTHING, db_column='Competition_id')  # Field name made lowercase.
+    division = models.ForeignKey(Division, models.DO_NOTHING, db_column='Division_id')  # Field name made lowercase.
     round = models.IntegerField(blank=True, null=True)
     team1 = models.ForeignKey('Team', models.DO_NOTHING, db_column='team1', blank=True, null=True)
     team2 = models.ForeignKey('Team', models.DO_NOTHING, db_column='team2', related_name='gameresult_team2_set', blank=True, null=True)
