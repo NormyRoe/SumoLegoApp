@@ -101,7 +101,7 @@ def SpecificUser(request, ID):
             data = json.loads(request.body)
 
             required_fields = ['access_role','first_name', 'surname', 'email_address', 
-            'username', 'password']
+            'username']
 
             for field in required_fields:
                 if field not in data:
