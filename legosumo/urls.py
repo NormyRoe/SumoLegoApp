@@ -26,4 +26,5 @@ urlpatterns = [
     path('teams', include('teamsapp.urls')),
     path('users', include('usersapp.urls')),
     path('checkin/<str:ID>', include('checkinapp.urls')),
+    path('gameresult', include('gameresultapp.urls')),
 ]

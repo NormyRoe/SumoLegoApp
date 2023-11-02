@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'teamsapp',
     'usersapp',
     'checkinapp',
+    'gameresultapp',
     'legosumodb.apps.LegosumodbConfig',
     'django.contrib.admin',
     'django.contrib.auth',
