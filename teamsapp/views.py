@@ -26,12 +26,12 @@ def TheModelView(request):
             connection = get_database_connection()
             cursor = connection.cursor()
 
-            query = "SELECT Division.name, Team.Team_id, Team.name, Team.School_id FROM Division_has_Team INNER JOIN Division ON Division.Division_id = Division_has_Team.Division_id INNER JOIN Team ON Division_has_Team.Team_id = Team.Team_id;;"
+            query = "SELECT Team.Team_id, Team.name, School.name AS 'School_Name', Division.name AS 'Division_Name' FROM Team INNER JOIN School ON Team.School_id = School.School_id INNER JOIN Division_has_Team ON Division_has_Team.Team_id = Team.Team_id INNER JOIN Division ON Division.Division_id = Division_has_Team.Division_id;"
             
             cursor.execute(query)
             results = cursor.fetchall()
 
-            data = [{'division_name': result[0], 'team_id': result[1], 'team_name': result[2], 'school_id': result[3]} for result in results]
+            data = [{'team_id': result[0], 'name': result[1], 'school': result[2], 'division': result[3]} for result in results]
 
             cursor.close()
 
@@ -55,13 +55,13 @@ def RequestedSchool(request, ID):
             connection = get_database_connection()
             cursor = connection.cursor()
 
-            query = "SELECT Division.name, Team.Team_id, Team.name, Team.School_id FROM Division_has_Team INNER JOIN Division ON Division.Division_id = Division_has_Team.Division_id INNER JOIN Team ON Division_has_Team.Team_id = Team.Team_id WHERE Team.School_id = %s;"
+            query = "SELECT Team.Team_id, Team.name, School.name AS 'School_Name', Division.name AS 'Division_Name' FROM Team INNER JOIN School ON Team.School_id = School.School_id INNER JOIN Division_has_Team ON Division_has_Team.Team_id = Team.Team_id INNER JOIN Division ON Division.Division_id = Division_has_Team.Division_id WHERE Team.School_id = %s;"
             params = (ID,)
 
             cursor.execute(query, params)
             results = cursor.fetchall()
 
-            data = [{'division_name': result[0], 'team_id': result[1], 'team_name': result[2]} for result in results]
+            data = [{'team_id': result[0], 'name': result[1], 'school': result[2], 'division': result[3]} for result in results]
 
             cursor.close()
 
