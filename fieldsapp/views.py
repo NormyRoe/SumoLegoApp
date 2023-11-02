@@ -21,21 +21,24 @@ def TheModelView(request):
     if request.method == 'GET':
 
         try:
+
+            # Get the database connection and cursor
+            connection = get_database_connection()
+            cursor = connection.cursor()
+
+            query = "SELECT Field.Field_id, Field.name as 'Field_Name', User.username, Division.name AS 'Division_Name' FROM Field INNER JOIN User ON Field.judge = User.User_id INNER JOIN Division_has_Field ON Field.Field_id = Division_has_Field.Field_id INNER JOIN Division ON Division_has_Field.Division_id = Division.Division_id;"
             
-            fields = LegoSumoField.objects.select_related('judge').all()
-            
-            # Convert database results into a list of dictionaries
-            data = [{'field_id': field.field_id, 'name': field.name, 'judge': {
-                'user_id': field.judge.user_id
-            }} for field in fields]
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            data = [{'field_id': result[0], 'name': result[1], 'division': result[3], 'judge': result[2]} for result in results]
+
+            cursor.close()
 
             return JsonResponse({'fields': data})
-       
 
         except Exception as e:
-            import logging
-            logging.error(str(e))  # Log the exception
-            return JsonResponse({'error': 'An error occurred'}, status=500)
+            return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
 
 
     if request.method == 'POST':
