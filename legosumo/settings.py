@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'schoolsapp',
     'teamsapp',
     'usersapp',
+    'checkinapp',
     'legosumodb.apps.LegosumodbConfig',
     'django.contrib.admin',
     'django.contrib.auth',
