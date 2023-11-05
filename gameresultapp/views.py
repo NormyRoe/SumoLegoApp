@@ -37,8 +37,10 @@ def TheModelView(request, ID):
                     'start_time': gameresult.start_time,
                     'team1': gameresult.team1.name,
                     'team1_points': gameresult.team1_points,
+                    'team1_school': gameresult.team1.school.name,
                     'team2': gameresult.team2.name,
-                    'team2_points': gameresult.team2_points
+                    'team2_points': gameresult.team2_points,
+                    'team2_school': gameresult.team2.school.name
                 })
 
             return JsonResponse({'Game_Results': data})
