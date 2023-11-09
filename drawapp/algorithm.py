@@ -5,6 +5,47 @@ def GenerateAllRounds(number_of_teams : int) -> List[List[Tuple[int,int]]]:
     
     To generate a round robin tournament you only need to know the number of teams,
     then you can calculate the games and rounds. 
+    
+    Algorithm:
+    For example we have 5 teams and for round robin only 4 teams can play in a single 
+    round and 1 team will have a bye. If we encode the teams by indexes and mark a bye using team -1, then 
+    we can select a nominated team which will be always in first pair. 
+    
+    This is a pattern of 5 teams in a grapg; we have 5 teams and 1 bye(-1):
+    
+                   2
+                  
+    1           bye(-1)          3
+    
+          4              5
+          
+    The 1-st pair is between middle one and outer one, all other pairs then mirror on the left and right side.
+    Round 1:          -1 51234
+    -1 and 2
+    1 and 3
+    5 and 4
+    
+    Round 2:          -1 12345
+    -1 and 3
+    2 and 5 
+    1 and 4
+    
+    Round 3:          -1 23451
+    -1 and 4
+    1 and 5
+    2 and 3
+    
+    Round 4:          -1 34512
+    -1 and 5
+    4 and 3
+    1 and 2
+    
+    Round 5:          -1 45123
+    -1 and 1`
+    2 and 4
+    3 and 5
+    
+    
 
     Args:
         number_of_teams (int): _description_
