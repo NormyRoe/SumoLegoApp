@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
+from drawapp.algorithm import GenerateAllRounds, ValidateRounds
 import legosumodb.models
 
 # Create your tests here.
@@ -21,7 +22,7 @@ class Test(TestCase):
         self.divisionhascompetition1 = legosumodb.models.DivisionHasCompetition()
         self.divisionhascompetition1.competition = self.competition
         self.divisionhascompetition1.division = self.division
-        self.divisionhascompetition1.nbr_of_fields = 1
+        self.divisionhascompetition1.nbr_of_fields = 4
         self.divisionhascompetition1.save()
         
         self.school = legosumodb.models.School()
@@ -37,25 +38,49 @@ class Test(TestCase):
         self.school.paid = True
         self.school.save()
         
-        self.team1 = legosumodb.models.Team()
-        self.team1.name = "Team 1"
-        self.team1.school = self.school
-        self.team1.save()
+        for team_number in range(1, 9):
+            self.team = legosumodb.models.Team()
+            self.team.name = "Team "+str(team_number)
+            self.team.school = self.school
+            self.team.save()
 
-        self.checked_in1 = legosumodb.models.CheckedIn()
-        self.checked_in1.competition_id = self.competition
-        self.checked_in1.division_id = self.division
-        self.checked_in1.team_id = self.team1
-        self.checked_in1.checked_in = True
-        self.checked_in1.save() 
+            self.checked_in = legosumodb.models.CheckedIn()
+            self.checked_in.competition_id = self.competition
+            self.checked_in.division_id = self.division
+            self.checked_in.team_id = self.team
+            self.checked_in.checked_in = True
+            self.checked_in.save() 
                 
     def test_can_retrieve_data(self):
         """
         check that we can get data from the database
         """
         checkins = legosumodb.models.CheckedIn.objects.all()
-        self.assertEqual(len(checkins), 1)
+        self.assertEqual(len(checkins), 8)
         for checkin in checkins:
             print("Found checkin for team `", checkin.team_id.name, "` into competition `", checkin.competition_id.name, "`", sep="")
     
     
+    def test_create_draw(self):
+        pass
+
+class TestPairingAlgorithm(TestCase):
+    def test_can_pair_two_teams(self):
+        pairings = GenerateAllRounds(2)
+        self.assertEqual(len(pairings), 1)
+        self.assertTrue(ValidateRounds(pairings))
+        
+    def test_can_pair_three_teams(self):
+        pairings = GenerateAllRounds(3)
+        self.assertEqual(len(pairings), 3)
+        self.assertTrue(ValidateRounds(pairings))
+        
+    def test_can_pair_four_teams(self):
+        pairings = GenerateAllRounds(4)
+        self.assertEqual(len(pairings), 3)
+        self.assertTrue(ValidateRounds(pairings))
+        
+    def test_can_pair_seventeen_teams(self):
+        pairings = GenerateAllRounds(17)
+        self.assertEqual(len(pairings), 17)
+        self.assertTrue(ValidateRounds(pairings))
