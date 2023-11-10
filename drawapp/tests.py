@@ -62,25 +62,34 @@ class Test(TestCase):
     
     
     def test_create_draw(self):
-        pass
+        team_1 = legosumodb.models.Team.objects.get(name = "Team 1")
+        self.assertEqual(team_1.school.name, "School 1")
+    
 
 class TestPairingAlgorithm(TestCase):
     def test_can_pair_two_teams(self):
-        pairings = GenerateAllRounds(2)
-        self.assertEqual(len(pairings), 1)
-        self.assertTrue(ValidateRounds(pairings))
+        #
+        pairings_all_rounds = GenerateAllRounds(number_of_teams = 2)
+        self.assertEqual(len(pairings_all_rounds), 1)
+        self.assertTrue(ValidateRounds(pairings_all_rounds))
         
     def test_can_pair_three_teams(self):
-        pairings = GenerateAllRounds(3)
-        self.assertEqual(len(pairings), 3)
-        self.assertTrue(ValidateRounds(pairings))
+        pairings_all_rounds = GenerateAllRounds(number_of_teams = 3)
+        self.assertEqual(len(pairings_all_rounds), 3)
+        self.assertTrue(ValidateRounds(pairings_all_rounds))
         
     def test_can_pair_four_teams(self):
-        pairings = GenerateAllRounds(4)
-        self.assertEqual(len(pairings), 3)
-        self.assertTrue(ValidateRounds(pairings))
+        pairings_all_rounds = GenerateAllRounds(number_of_teams = 4)
+        self.assertEqual(len(pairings_all_rounds), 3)
+        self.assertTrue(ValidateRounds(pairings_all_rounds))
+        
+    def test_can_pair_twelve_teams(self):
+        pairings_all_rounds = GenerateAllRounds(number_of_teams = 12)
+        self.assertEqual(len(pairings_all_rounds), 11)
+        self.assertTrue(ValidateRounds(pairings_all_rounds))
         
     def test_can_pair_seventeen_teams(self):
-        pairings = GenerateAllRounds(17)
-        self.assertEqual(len(pairings), 17)
-        self.assertTrue(ValidateRounds(pairings))
+        pairings_all_rounds = GenerateAllRounds(number_of_teams = 17)
+        self.assertEqual(len(pairings_all_rounds), 17)
+        self.assertTrue(ValidateRounds(pairings_all_rounds))
+        
