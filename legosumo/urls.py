@@ -27,4 +27,5 @@ urlpatterns = [
     path('users', include('usersapp.urls')),
     path('checkin/<str:ID>', include('checkinapp.urls')),
     path('gameresult', include('gameresultapp.urls')),
+    path('draw/', include('drawapp.urls')),
 ]
