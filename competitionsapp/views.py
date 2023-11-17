@@ -20,14 +20,22 @@ def TheModelView(request):
     if request.method == 'GET':
 
         try:
-            
-            competitions = LegoSumoCompetition.objects.all()
 
-            # Convert database results into a list of dictionaries
-            data = [{'competition_id': competition.competition_id,'name': competition.name, 'games_per_team': competition.games_per_team, 'date': competition.date} for competition in competitions]
+            # Get the database connection and cursor
+            connection = get_database_connection()
+            cursor = connection.cursor()
+
+            query = "SELECT Distinct Competition.Competition_id, Competition.name, Competition.games_per_team, Competition.date, Division_has_Competition.nbr_of_fields FROM Competition INNER JOIN Division_has_Competition ON Division_has_Competition.Competition_id = Competition.Competition_id;"
+            
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            data = [{'competition_id': result[0], 'name': result[1], 'games_per_team': result[2], 'date': result[3], 'nbr_of_fields': result[4]} for result in results]
+
+            cursor.close()
 
             return JsonResponse({'competitions': data})
-       
+            
 
         except Exception as e:
             return JsonResponse({'error': 'An error occurred'}, status=500)
