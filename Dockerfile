@@ -15,8 +15,8 @@ ENV DB_ENGINE=django.db.backends.mysql
 ENV DB_HOST=mysql-3a79300a-legosumo-e2db.a.aivencloud.com
 ENV DB_PORT=10694
 ENV DB_DATABASE=legosumo_db
-ENV DB_USER=avnadmin
-ENV DB_PASSWORD=AVNS_LxEnuI7LBmp3ImU2utR
+ENV DB_USER=username
+ENV DB_PASSWORD=password
 
 #Docker
 # Here we declare the working directory and assign it to the variable name DockerHOME.
