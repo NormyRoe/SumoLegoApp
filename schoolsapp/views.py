@@ -28,7 +28,7 @@ def TheModelView(request):
              'street_address_line_2': school.street_address_line_2,
              'suburb': school.suburb, 'state': school.state, 'postcode': school.postcode,
              'contact_name': school.contact_name, 'contact_number': school.contact_number,
-             'paid': school.paid} for school in schools]
+             'email_address': school.email_address, 'paid': school.paid} for school in schools]
 
             return JsonResponse({'schools': data})
        
