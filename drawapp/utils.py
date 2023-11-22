@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple
 from drawapp.algorithm import GenerateAllRounds
 from legosumodb.models import Division, Competition, Team, DivisionHasCompetition, Field, GameResult
 from django.db.models import Count
+from django.db import IntegrityError
 import logging
 
 
@@ -104,7 +105,7 @@ def GetTeamsPlayingInDivisionCompetition(division : Division, competition : Comp
     return teamsPlayingInDivisionForCompetition
 
 
-def GenerateRoundsForCompetition(competition : Competition, startTime : timezone.datetime, options : Dict[str, str] = {}):
+def GenerateRoundsForCompetition(competition_id, startTime, options={}):
     """_summary_
 
     Args:
@@ -113,12 +114,21 @@ def GenerateRoundsForCompetition(competition : Competition, startTime : timezone
         options (Dict[str, str], optional): Any options to change the match making. Defaults to {}.
     """
     
-    # Need to get divisions for competition and will add the team count
-    divisionsForCurrentCompetitionWithTeamCount = GetDivisionsForCompetitionWithTeamCountAnnotation(competition)
+    try:
+        competition = GetCompetitionForCompetitionId(competition_id)
+        
+        # Need to get divisions for competition and will add the team count
+        divisionsForCurrentCompetitionWithTeamCount = GetDivisionsForCompetitionWithTeamCountAnnotation(competition)
+        
+        # Generate all pairings   
+        for division in divisionsForCurrentCompetitionWithTeamCount:
+            GenerateRoundsForDivision(division, competition, startTime, options)
+
+    except Competition.DoesNotExist as e:
+        raise RuntimeError(f"Competition with ID {competition_id} not found")
+    except Exception as e:
+        raise RuntimeError("Could not generate rounds")
     
-    # Generate all pairings   
-    for division in divisionsForCurrentCompetitionWithTeamCount:
-        GenerateRoundsForDivision(division, competition, startTime, options)
 
 
 def GenerateRoundsForDivision(division : Division, competition : Competition, startTime : timezone.datetime, options : Dict[str, str] = {}):
