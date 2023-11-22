@@ -29,18 +29,25 @@ def TheModelView(request, ID):
             # Convert database results into a list of dictionaries
             data = []
             for gameresult in gameresults:
+                division_name = gameresult.division.name if gameresult.division else 'None'
+                team1_name = gameresult.team1.name if gameresult.team1 else 'None'
+                team2_name = gameresult.team2.name if gameresult.team2 else 'None'
+                team1_school_name = gameresult.team1.school.name if gameresult.team1 and gameresult.team1.school else 'None'
+                team2_school_name = gameresult.team2.school.name if gameresult.team2 and gameresult.team2.school else 'None'
+                
+
                 data.append({
                     'game_id': gameresult.game_id,
-                    'division': gameresult.division.name,
+                    'division': division_name,
                     'round': gameresult.round,
-                    'field': gameresult.field.name,
+                    'field': gameresult.field.name if gameresult.field else 'None',
                     'start_time': gameresult.start_time,
-                    'team1': gameresult.team1.name,
+                    'team1': team1_name,
                     'team1_points': gameresult.team1_points,
-                    'team1_school': gameresult.team1.school.name,
-                    'team2': gameresult.team2.name,
-                    'team2_points': gameresult.team2_points,
-                    'team2_school': gameresult.team2.school.name
+                    'team1_school': team1_school_name,
+                    'team2': team2_name,
+                    'team2_points': gameresult.team2_points if gameresult.team2_points else '0',
+                    'team2_school': team2_school_name
                 })
 
             return JsonResponse({'Game_Results': data})
