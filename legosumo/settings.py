@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=#aicl!qxy+^gn7!3ev8w83^!d9*^%q+t%oj9xx4%yummk+g+3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'usersapp',
     'checkinapp',
     'gameresultapp',
+    'corsheaders',
     'legosumodb.apps.LegosumodbConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,3 +143,19 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#CORS access variables
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow specified methods for approved origins
+
+CORS_ALLOW_METHODS = (
+    "GET",
+    "POST",    
+    "PATCH",
+    "DELETE",
+)
+
