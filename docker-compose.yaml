@@ -5,6 +5,8 @@ services:
   legosumoapp:
     build: ./
     restart: unless-stopped
+    ports:
+      - 8000:8000
     environment:
       - DB_ENGINE=""
       - DB_HOST=""
@@ -12,5 +14,5 @@ services:
       - DB_USER=""
       - DB_PASSWORD=""
       - DB_DATABASE=legosumo_db
-      - PRODUCTION=True
+      - DJANGO_DEBUG_MODE=false
 

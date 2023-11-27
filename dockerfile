@@ -41,4 +41,12 @@ EXPOSE 8000
 #CMD python manage.py runserver
 
 # Start the server
+# Because Django is being used as API only we can use gunicorn directly,
+# otherwise we will need an additional file server do host the static files
+# will see 404 for any /static/ file in this mode.
+# Using gunicorn will give greater performance for the end users as it runs
+# multiple python processes
 CMD ["gunicorn", "legosumo.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+# Debug server, can host static files
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
