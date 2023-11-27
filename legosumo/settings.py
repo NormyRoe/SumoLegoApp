@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
+import platform
 from pathlib import Path
 import pymysql
 
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=#aicl!qxy+^gn7!3ev8w83^!d9*^%q+t%oj9xx4%yummk+g+3'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.getenv('DJANGO_DEBUG_MODE'))
 
 ALLOWED_HOSTS = ['*']
 
@@ -34,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'loginapp',
     'competitionsapp',
+    'drawapp',
     'divisionsapp',
     'fieldsapp',
     'schoolsapp',
@@ -41,15 +43,14 @@ INSTALLED_APPS = [
     'usersapp',
     'checkinapp',
     'gameresultapp',
-    'corsheaders',
     'legosumodb.apps.LegosumodbConfig',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',    
-    'drawapp',
 ]
 
 MIDDLEWARE = [
@@ -91,12 +92,12 @@ pymysql.install_as_MySQLdb()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'legosumo_db',
-        'USER': 'username',
-        'PASSWORD': 'password',
-        'HOST': 'mysql-3a79300a-legosumo-e2db.a.aivencloud.com',
-        'PORT': '10694'
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+        'NAME': os.getenv('DB_DATABASE', 'legosumo_db'),
+        'USER': os.getenv('DB_USER', 'username'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT', '')
     }
 }
 
@@ -158,4 +159,3 @@ CORS_ALLOW_METHODS = (
     "PATCH",
     "DELETE",
 )
-
