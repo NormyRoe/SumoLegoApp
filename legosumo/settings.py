@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'usersapp',
     'checkinapp',
     'gameresultapp',
+    'drawapp',
     'corsheaders',
     'legosumodb.apps.LegosumodbConfig',
     'django.contrib.admin',
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',    
-    'drawapp',
 ]
 
 MIDDLEWARE = [
@@ -150,7 +150,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Allow specified methods for approved origins
 
 CORS_ALLOW_METHODS = (
     "GET",
@@ -158,4 +157,3 @@ CORS_ALLOW_METHODS = (
     "PATCH",
     "DELETE",
 )
-
