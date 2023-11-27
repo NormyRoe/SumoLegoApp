@@ -1,9 +1,10 @@
 from datetime import timedelta
+from typing import Dict
 from urllib import request
 from django.test import TestCase
 from django.utils import timezone
 from drawapp.algorithm import GenerateAllRounds, ValidateRounds
-from drawapp.utils import GenerateRoundsForCompetition
+from drawapp.utils import GenerateByeGame, GenerateRoundsForCompetition
 from drawapp.views import CreateDrawForCompetition
 import legosumodb.models
 from django.db.models import Count
@@ -128,6 +129,13 @@ def GenerateDummyData(self):
 
 class Test(TestCase):
     def setUp(self):
+        self.divisionNames = []
+        self.competitionNames = []
+        self.division : Dict[str, legosumodb.models.Division] = {}
+        self.competition : Dict[str, legosumodb.models.Competition] = {}
+        self.team : Dict[str, legosumodb.models.Team] = {}
+        self.fields = {}
+        
         GenerateDummyData(self)
                 
     def test_can_retrieve_data(self):
@@ -172,7 +180,42 @@ class Test(TestCase):
                     f"Division {division.name}, Competition {competition.name}: Found bye for round {gameNumber+1}" + 
                     f" for \"{team_1.name}\" (score: {result.team1_points}) scheduled at {gameStartTime}"
                 )
-            
+                
+    def test_generate_bye_game(self):
+        divisionName = self.divisionNames[0]
+        division = self.division[divisionName]
+        team = list(self.team.values())[0]
+        competitionName = self.competitionNames[0]
+        competition = self.competition[competitionName]
+        time = timezone.datetime.now()
+        
+        GenerateByeGame(
+            division=division,
+            competition=competition,
+            team_1=team,
+            gameNumber=7,
+            gameStartTime=time
+        )
+        
+        results = list(legosumodb.models.GameResult.objects.filter(
+            division__division_id = division.division_id
+        ))
+        
+        self.assertEqual(len(results),1)
+        
+        gameResult = results[0]
+        self.assertEqual(gameResult.competition.competition_id, competition.competition_id)
+        self.assertEqual(gameResult.division.division_id, division.division_id)
+        #self.assertTrue((gameResult.start_time - time.time()) )
+        self.assertEqual(gameResult.round, 7)
+        self.assertEqual(gameResult.team1.team_id, team.team_id)
+        self.assertEqual(gameResult.team1_points, 1)
+        self.assertEqual(gameResult.team2, None)
+        self.assertEqual(gameResult.team2_points, None)
+        
+        
+      
+        
     
     
 class TestView(TestCase):
