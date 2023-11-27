@@ -200,7 +200,7 @@ def GenerateGamesForDivision(division : Division,
                 team_1 = teams[max(pairing)]
                 
                 # Genearte bye game
-                GenerateByeGame(division, competition, team_1, gameNumber, gameStartTime)
+                GenerateByeGame(division, competition, team_1, gameNumber + 1, gameStartTime)
                 
             else:
                 # Get the teams
@@ -213,7 +213,7 @@ def GenerateGamesForDivision(division : Division,
                 number_of_field_allocations += 1
             
                 # Generate standard game                
-                GenerateStandardGame(division, competition, gameNumber, gameStartTime, field, team_1, team_2)
+                GenerateStandardGame(division, competition, gameNumber + 1, gameStartTime, field, team_1, team_2)
                 
 
 def GenerateStandardGame(division : Division, competition : Competition, gameNumber : int, gameStartTime : timezone.datetime, field : Field, team_1 : Team, team_2 : Team):
