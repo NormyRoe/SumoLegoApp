@@ -46,7 +46,7 @@ EXPOSE 8000
 # will see 404 for any /static/ file in this mode.
 # Using gunicorn will give greater performance for the end users as it runs
 # multiple python processes
-CMD ["gunicorn", "legosumo.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "legosumo.wsgi:application", "--preload", "--threads", "4", "--workers", "4", "--bind", "0.0.0.0:8000"]
 
 # Debug server, can host static files
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
